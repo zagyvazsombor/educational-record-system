@@ -1,0 +1,77 @@
+<div class="container mt-4">
+  <h2>{{ isNew ? 'New Student' : 'Edit Student' }}</h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Personal Information</h5>
+      <form (ngSubmit)="saveStudentInfo()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" placeholder="e.g. Példa Péter" [(ngModel)]="student.name" name="name" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Group</label>
+            <select class="form-select" [(ngModel)]="student.group" name="group">
+              @for (g of groups; track g) {
+                <option [value]="g">{{ g }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="back()">Back to Students</button>
+      </form>
+    </div>
+  </div>
+
+  @if (!isNew) {
+    <div class="card border-info">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Enrolled Courses and Grades</h5>
+      </div>
+      <div class="card-body">
+
+        <div class="input-group mb-4">
+          <select class="form-select" [(ngModel)]="selectedCourseIdToAdd" name="newCourse">
+            <option [ngValue]="null">Choose a course to enroll...</option>
+            @for (c of Courses; track c.id) {
+              <option [ngValue]="c.id">{{ c.subject?.name }} - {{ c.name }}</option>
+            }
+          </select>
+          <button class="btn btn-outline-success" type="button" (click)="addCourse()">Enroll to Course</button>
+        </div>
+
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Subject</th>
+              <th>Course</th>
+              <th style="width: 150px;">Grade</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (e of student.enrollments; track e.id) {
+              <tr>
+                <td><strong>{{ e.course?.subject?.name }}</strong></td>
+                <td>{{ e.course?.name }}</td>
+                <td>
+                  <input type="number" class="form-control form-control-sm"
+                         [(ngModel)]="e.grade" min="1" max="5" placeholder="No Grade">
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-success me-2" (click)="updateGrade(e)">Save Grade</button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="removeEnrollment(e.id)">Unenroll (X)</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4" class="text-center text-muted">The student has not enrolled in any courses yet.</td></tr>
+            }
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  }
+</div>

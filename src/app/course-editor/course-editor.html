@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <h2>{{ isNew ? 'New Course' : 'Edit Course' }}</h2>
+  <form (ngSubmit)="save()">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-control" placeholder="e.g. 1-es csoport Kedd(13:00)" [(ngModel)]="course.name" name="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Subject</label>
+      <select class="form-select" [(ngModel)]="course.subject" name="subject" [compareWith]="compareSubjects" required>
+        <option [ngValue]="null" disabled>Choose a subject...</option>
+        @for (s of subjects; track s.id) {
+          <option [ngValue]="s">{{ s.name }}</option>
+        }
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="cancel()">Cancel</button>
+  </form>
+</div>

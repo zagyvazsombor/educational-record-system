@@ -1,0 +1,84 @@
+<div class="container mt-4">
+  <h2>Manage Students</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+<button class="btn btn-success mb-3" (click)="createStudent()">New Student</button>
+</div>
+
+<div class="card mb-4 bg-light">
+    <div class="card-body">
+      <h5 class="card-title">Tankör statisztika</h5>
+      <div class="d-flex align-items-center gap-3">
+        <select class="form-select w-auto" [(ngModel)]="selectedGroup" (ngModelChange)="onGroupChange()">
+          <option value="" disabled selected>Válassz tankört...</option>
+          @for (g of groups; track g) {
+            <option [value]="g">{{ g }}</option>
+          }
+        </select>
+
+        <button class="btn btn-info" [disabled]="!selectedGroup" (click)="calculateGroupAverage()">
+          Átlag kiszámítása
+        </button>
+
+        @if (groupAverageResult !== null) {
+          <span class="badge bg-primary fs-6">
+            {{ selectedGroup }} átlaga: {{ groupAverageResult > 0 ? groupAverageResult.toFixed(2) : 'Nincs elég adat' }}
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+
+
+  <table class="table table-striped table-hover border">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Group</th>
+        <th>Enrolled courses with grades</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (student of students(); track student.id) {
+        <tr>
+          <td>{{ student.name }}</td>
+          <td>{{ student.group }}</td>
+          <td>
+            @if (student.enrollments && student.enrollments.length > 0) {
+              <ul class="mb-0 ps-3">
+                @for (enrollment of student.enrollments; track enrollment.id) {
+                  <li class="d-flex justify-content-between align-items-center mb-1">
+                    {{ enrollment.course.subject.name }}
+                    {{ enrollment.course.name }}
+                    <span class="badge" [class.bg-success]="enrollment.grade" [class.bg-secondary]="!enrollment.grade">
+                    {{ enrollment.grade ? enrollment.grade : 'Unrated' }}
+                    </span>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <span class="text-muted">No courses enrolled</span>
+            }
+          </td>
+          <td>
+
+            <div class="d-inline-flex align-items-center me-2">
+              @if (!studentAverages[student.id]) {
+                <button class="btn btn-sm btn-info" (click)="calculateStudentAverage(student.id)">Átlag</button>
+              } @else {
+                <span class="badge bg-info text-dark border border-info fs-6">
+                  Átlag: {{ studentAverages[student.id] }}
+                </span>
+              }
+            </div>
+
+            <button class="btn btn-sm btn-primary me-2" (click)="editStudent(student)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteStudent(student)">Remove</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+</div>

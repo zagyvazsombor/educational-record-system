@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2>{{ isNew ? 'New Instructor' : 'Edit Instructor' }}</h2>
+  <form (ngSubmit)="save()">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-control" placeholder="e.g. Kovács Béla" [(ngModel)]="instructor.name" name="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Department</label>
+      <select class="form-select" [(ngModel)]="instructor.department" name="dept">
+        @for (d of departments; track d) {
+          <option [value]="d">{{ d }}</option>
+        }
+      </select>
+    </div>
+
+    <hr>
+    <h4>Subjects taught</h4>
+
+    <ul class="list-group mb-3">
+      @for (s of instructor.subjects; track s.id; let i = $index) {
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ s.name }}
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeSubject(i)">Remove</button>
+        </li>
+      } @empty {
+        <li class="list-group-item text-muted">No subjects assigned yet.</li>
+      }
+    </ul>
+
+    <div class="input-group mb-3">
+      <select class="form-select" [(ngModel)]="selectedSubjectToAdd" name="newSub">
+        <option [ngValue]="null">Choose a subject to assign...</option>
+        @for (s of allSubjects; track s.id) {
+          <option [ngValue]="s">{{ s.name }}</option>
+        }
+      </select>
+      <button class="btn btn-outline-success" type="button" (click)="addSubject()">Add</button>
+    </div>
+
+    <hr>
+    <button type="submit" class="btn btn-primary">Minden mentése</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="cancel()">Cancel</button>
+  </form>
+</div>
