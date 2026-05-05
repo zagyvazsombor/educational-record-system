@@ -68,7 +68,7 @@ export class StudentController extends Controller{
       studentsInGroup.forEach(student => {
         student.enrollments.forEach(x => {
           if (x.grade !== null) {
-            totalSum += x.grade;
+            totalSum += Number(x.grade);
             totalGradesCount++;
           }
         });

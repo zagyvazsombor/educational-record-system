@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CourseDTO, EnrollmentDTO, StudentDTO } from '../../../models';
-import { StudentGroup } from '../../../models/enums';
+import { Grade, StudentGroup } from '../../../models/enums';
 import { FormsModule } from '@angular/forms';
 import { StudentService } from '../services/student.service';
 import { CourseService } from '../services/course.service';
@@ -22,6 +22,7 @@ export class StudentEditor implements OnInit {
   };
 
   groups = Object.values(StudentGroup);
+  availableGrades = [1, 2, 3, 4, 5];
   Courses: CourseDTO[] = [];
   selectedCourseIdToAdd: number | null = null;
 
@@ -98,8 +99,8 @@ export class StudentEditor implements OnInit {
     enrollment.grade = enrollment.grade ? Number(enrollment.grade) : null;
 
     this.enrollmentService.update(enrollment).subscribe({
-      next: () => alert('Jegy sikeresen elmentve!'),
-      error: (err) => alert('Hiba a jegy mentésekor!')
+      next: () => alert('Grade saved successfully'),
+      error: (err) => alert('Error during saving the grade!')
     });
   }
 

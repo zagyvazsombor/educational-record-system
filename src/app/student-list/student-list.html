@@ -7,22 +7,22 @@
 
 <div class="card mb-4 bg-light">
     <div class="card-body">
-      <h5 class="card-title">Tankör statisztika</h5>
+      <h5 class="card-title">Group statistics</h5>
       <div class="d-flex align-items-center gap-3">
         <select class="form-select w-auto" [(ngModel)]="selectedGroup" (ngModelChange)="onGroupChange()">
-          <option value="" disabled selected>Válassz tankört...</option>
+          <option value="" disabled selected>Choose a group...</option>
           @for (g of groups; track g) {
             <option [value]="g">{{ g }}</option>
           }
         </select>
 
         <button class="btn btn-info" [disabled]="!selectedGroup" (click)="calculateGroupAverage()">
-          Átlag kiszámítása
+          Calculate Average
         </button>
 
         @if (groupAverageResult !== null) {
           <span class="badge bg-primary fs-6">
-            {{ selectedGroup }} átlaga: {{ groupAverageResult > 0 ? groupAverageResult.toFixed(2) : 'Nincs elég adat' }}
+            {{ selectedGroup }} average: {{ groupAverageResult > 0 ? groupAverageResult.toFixed(2) : 'Not enough data' }}
           </span>
         }
       </div>
@@ -65,10 +65,10 @@
 
             <div class="d-inline-flex align-items-center me-2">
               @if (!studentAverages[student.id]) {
-                <button class="btn btn-sm btn-info" (click)="calculateStudentAverage(student.id)">Átlag</button>
+                <button class="btn btn-sm btn-info" (click)="calculateStudentAverage(student.id)">Average</button>
               } @else {
                 <span class="badge bg-info text-dark border border-info fs-6">
-                  Átlag: {{ studentAverages[student.id] }}
+                  Average: {{ studentAverages[student.id] }}
                 </span>
               }
             </div>

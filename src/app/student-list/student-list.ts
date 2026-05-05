@@ -59,13 +59,13 @@ export class StudentList implements OnInit {
     this.router.navigate(['/student-editor']);
   }
 
-calculateGroupAverage() {
+  calculateGroupAverage() {
     if (!this.selectedGroup) return;
 
     this.studentService.getGroupAverage(this.selectedGroup).subscribe({
       next: (res) => {
         this.groupAverageResult = res.average;
-        this.cdRef.markForCheck(); // FRISSÍTJÜK A KÉPERNYŐT (Nincs több dupla kattintás!)
+        this.cdRef.markForCheck();
       },
       error: (err) => console.error('Hiba az átlag számításakor', err)
     });
@@ -74,8 +74,8 @@ calculateGroupAverage() {
   calculateStudentAverage(id: number) {
     this.studentService.getStudentAverage(id).subscribe({
       next: (res) => {
-        this.studentAverages[id] = res.average > 0 ? res.average.toFixed(2) : 'Nincs jegy';
-        this.cdRef.markForCheck(); // FRISSÍTJÜK A KÉPERNYŐT ITT IS!
+        this.studentAverages[id] = res.average > 0 ? res.average.toFixed(2) : 'No Grade';
+        this.cdRef.markForCheck();
       },
       error: (err) => console.error('Hiba az átlag számításakor', err)
     });
